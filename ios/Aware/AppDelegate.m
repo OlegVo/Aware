@@ -54,7 +54,30 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
+  
   return YES;
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
+{
+  //handle the actions
+  if ([identifier isEqualToString:@"declineAction"]){
+  }
+  else if ([identifier isEqualToString:@"answerAction"]){
+  }
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+  NSLog(@"Some notification here");
+  
+//  UIApplicationState applicationState = application.applicationState;
+//  if (applicationState == UIApplicationStateBackground) {
+//    [application presentLocalNotificationNow:notification];
+//  }
 }
 
 @end
