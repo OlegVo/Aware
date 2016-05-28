@@ -6,39 +6,67 @@ import {
     Text,
     TouchableOpacity,
     LayoutAnimation,
+    Image,
+    ScrollView,
+    NativeModules,
 } from 'react-native';
 
-import _ from 'lodash';
+import Menu from './Menu';
 
 class MainPage extends Component {
+    scheduleNotifications() {
+        const { notifications } = this.props;
+        
+        console.log('notifications', notifications);
+
+        // const LocalNotificationManager = NativeModules.LocalNotificationManager;
+        // LocalNotificationManager.scheduleNotification('Yep, that\'s notification!');
+    }
+    
     render() {
         const { categories, actions } = this.props;
-        console.log('categories', categories)
         const { selected, other } = categories;
+
+        const noSelected = (selected.length == 0);
+        const otherCategoriesText = noSelected ? 'Над чем вы хотите поработать?' : 'Ещё хочу добавить';
 
         return (
             <View style={styles.mainPage}>
-                {!!selected.length &&
-                    <View style={styles.selectedCategories}>
-                        <View style={styles.title}>
-                            <Text style={styles.titleText}>Я сейчас работаю над</Text>
-                        </View>
-                        {selected.map(category => (
-                            <Category key={category.text} category={category} actions={actions} selected={true} />
-                        ))}
-                    </View>
-                }
+                <Menu actions={actions} />
 
-                {!!other.length &&
-                    <View style={styles.otherCategories}>
-                        <View style={styles.title}>
-                            <Text style={styles.titleText}>Над чем вы хотите поработать?</Text>
+                <ScrollView>
+                    {!!selected.length &&
+                        <View style={styles.selectedCategories}>
+                            <View style={styles.titleIcon}>
+                                <Image source={require('./assets/Checkmark_In_Circle.png')} />
+                            </View>
+                            <View style={styles.title}>
+                                <Text style={styles.titleText}>Я сейчас работаю над</Text>
+                            </View>
+                            <View style={styles.categorySeparator}></View>
+                            {selected.map(category => (
+                                <Category key={category.text} category={category} actions={actions} selected={true} />
+                            ))}
                         </View>
-                        {other.map(category => (
-                            <Category key={category.text} category={category} actions={actions} />
-                        ))}
-                    </View>
-                }
+                    }
+
+                    {!!other.length &&
+                        <View style={styles.otherCategories}>
+                            {!noSelected &&
+                                <View style={styles.titleIcon}>
+                                    <Image source={require('./assets/Plus_In_Circle.png')}/>
+                                </View>
+                            }
+                            <View style={styles.title}>
+                                <Text style={styles.titleText}>{otherCategoriesText}</Text>
+                            </View>
+                            <View style={styles.categorySeparator}></View>
+                            {other.map(category => (
+                                <Category key={category.text} category={category} actions={actions} />
+                            ))}
+                        </View>
+                    }
+                </ScrollView>
             </View>
         );
     }
@@ -54,27 +82,32 @@ class Category extends Component {
     toggle() {
         const { actions, category } = this.props;
 
-        LayoutAnimation.configureNext({
-            ...LayoutAnimation.Presets.easeInEaseOut,
-            duration: 300,
-        });
+         requestAnimationFrame(() => {
+            LayoutAnimation.configureNext({
+                ...LayoutAnimation.Presets.easeInEaseOut,
+                duration: 300,
+            });
 
-        actions.toggleCategory(category);
+            actions.toggleCategory(category);
+        })
     }
 
     render() {
         const { category, selected } = this.props;
 
         const categoryStyle = [styles.category];
+        const categoryTextStyle = [styles.categoryText];
         if (selected) {
             categoryStyle.push(styles.categorySelected)
+            categoryTextStyle.push(styles.categoryTextSelected)
         }
 
         return (
             <TouchableOpacity onPress={this.toggle}>
                 <View style={categoryStyle}>
-                    <Text>{category.text}</Text>
+                    <Text style={categoryTextStyle}>{category.text}</Text>
                 </View>
+                <View style={styles.categorySeparator}></View>
             </TouchableOpacity>
         );
     }
@@ -83,35 +116,55 @@ class Category extends Component {
 const styles = StyleSheet.create({
     mainPage: {
         flex: 1,
-        paddingTop: 20,
+        height: window.height,
     },
     selectedCategories: {
-        marginTop: 10,
+        // marginTop: 20,
     },
     otherCategories: {
-        marginTop: 30,
+        // marginTop: 20,
+    },
+    titleIcon: {
+        width: 28,
+        height: 28,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginTop: 20,
+        marginBottom: -10,
     },
     title: {
-        height: 30,
+        // height: 60,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 6,
+        paddingTop: 25,
+        paddingBottom: 25,
     },
     titleText: {
-        fontSize: 17,
-        lineHeight: 22,
+        textAlign: 'center',
+        fontSize: 24,
+        lineHeight: 30,
+        color: 'rgb(164, 158, 158)'
+    },
+    categorySeparator: {
+        height: 1,
+        width: 140,
+        backgroundColor: 'rgb(224, 224, 224)',
+        alignSelf: 'center',
     },
     category: {
-        height: 50,
-        borderWidth: 1,
-        borderColor: '#ccc',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, .02)',
+        paddingVertical: 22,
     },
     categorySelected: {
-        backgroundColor: '#8AEC99',
-    }
+    },
+    categoryText: {
+        fontSize: 18,
+        color: 'rgb(95, 95, 95)',
+    },
+    categoryTextSelected: {
+        color: 'rgb(87, 163, 43)',
+    },
 });
 
 export default MainPage;

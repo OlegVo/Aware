@@ -7,7 +7,7 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(presentLocalNotificationNow:(NSString *)text)
+RCT_EXPORT_METHOD(scheduleNotification:(NSString *)text)
 {
   [[UIApplication sharedApplication] cancelAllLocalNotifications];
   

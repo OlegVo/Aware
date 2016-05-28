@@ -5,3 +5,23 @@ export const toggleCategory = (category) => {
         category
     };
 };
+
+export const showPage = (page) => {
+    return {
+        type: 'SHOW_PAGE',
+        page
+    };
+};
+
+export const setStep = (step) => {
+    return {
+        type: 'SET_STEP',
+        step
+    };
+};
+
+export const nextStep = () => {
+    return {
+        type: 'NEXT_STEP',
+    };
+};
