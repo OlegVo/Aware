@@ -1,4 +1,6 @@
 
+import _ from 'lodash';
+
 const categories = {
     selected: [],
     other: [

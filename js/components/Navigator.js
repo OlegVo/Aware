@@ -18,6 +18,8 @@ import { connect } from 'react-redux';
 
 import StartScreen from './StartScreen';
 import MainPage from './MainPage';
+import Settings from './Settings';
+// import Notification from './Notification';
 
 import * as actions from '../actions';
 
@@ -43,11 +45,8 @@ class Navigator extends Component {
 
     componentWillMount() {
         this.panResponder = PanResponder.create({
-            onMoveShouldSetResponderCapture: (evt, gestureState) => {
-                return (gestureState.dx > 20 || gestureState.dx < 20);
-            },
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-                return (gestureState.dx > 20 || gestureState.dx < 20);
+                return (gestureState.dx > 20 || gestureState.dx < -20);
             },
             onPanResponderMove: (evt, gestureState) => {
                 if (gestureState.dx > 40 || gestureState.dx < 0) {
@@ -79,6 +78,13 @@ class Navigator extends Component {
                         duration: 200,
                     }).start();
                 }
+            },
+            onPanResponderTerminate: () => {
+                Animated.timing(this.startScreenPan, {
+                    toValue: startScreenPosition,
+                    easing: Easing.inOut(Easing.cubic),
+                    duration: 200,
+                }).start();
             }
         });
     }
@@ -110,6 +116,10 @@ class Navigator extends Component {
 
                 <Animated.View style={[styles.startScreen, this.animatedStyles.startScreen]}>
                     <StartScreen step={step} actions={actions} />
+                </Animated.View>
+
+                <Animated.View style={[styles.startScreen, this.animatedStyles.startScreen]}>
+                    <Settings actions={actions} />
                 </Animated.View>
             </View>
         );

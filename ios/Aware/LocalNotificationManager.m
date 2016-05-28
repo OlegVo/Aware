@@ -7,28 +7,24 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(scheduleNotification:(NSString *)text)
+RCT_EXPORT_METHOD(cancelNotifications)
 {
-  [[UIApplication sharedApplication] cancelAllLocalNotifications];
+  NSLog(@"Cancel notifications");
   
+  [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+RCT_EXPORT_METHOD(scheduleNotification:(NSString *)text interval:(NSInteger)interval)
+{
   UILocalNotification *notification = [[UILocalNotification alloc] init];
   
-  notification.fireDate = [NSDate dateWithTimeIntervalSinceNow: 1];
-  
-//  _localNotification.timeZone = [NSTimeZone defaultTimeZone];
+  notification.fireDate = [NSDate dateWithTimeIntervalSinceNow: interval];
   
   notification.alertBody = text;
   
-//  _localNotification.soundName = UILocalNotificationDefaultSoundName;
-  
-//  _localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1;
+//  notification.soundName = UILocalNotificationDefaultSoundName;
   
   [[UIApplication sharedApplication] scheduleLocalNotification: notification];
-  
-  UILocalNotification* n2 = [[UILocalNotification alloc] init];
-  n2.fireDate = [NSDate dateWithTimeIntervalSinceNow: 10];
-  n2.alertBody = @"two";
-  [[UIApplication sharedApplication] scheduleLocalNotification: n2];
   
   NSLog(@"Notification should be presented: %@", text);
 }

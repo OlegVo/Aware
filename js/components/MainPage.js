@@ -13,14 +13,33 @@ import {
 
 import Menu from './Menu';
 
+import _ from 'lodash';
+
+const LocalNotificationManager = NativeModules.LocalNotificationManager;
+
 class MainPage extends Component {
-    scheduleNotifications() {
+    constructor(props) {
+        super(props);
+
+        this.updateNotifications = this.updateNotifications.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.categories !== this.props.categories) {
+            this.updateNotifications();
+        }
+    }
+
+    updateNotifications() {
         const { notifications } = this.props;
         
-        console.log('notifications', notifications);
+        console.log('updateNotifications, notifications', notifications);
 
-        // const LocalNotificationManager = NativeModules.LocalNotificationManager;
-        // LocalNotificationManager.scheduleNotification('Yep, that\'s notification!');
+        LocalNotificationManager.cancelNotifications();
+
+        if (notifications.length) {
+            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 15);
+        }
     }
     
     render() {
@@ -83,10 +102,10 @@ class Category extends Component {
         const { actions, category } = this.props;
 
          requestAnimationFrame(() => {
-            LayoutAnimation.configureNext({
-                ...LayoutAnimation.Presets.easeInEaseOut,
-                duration: 300,
-            });
+            // LayoutAnimation.configureNext({
+            //     ...LayoutAnimation.Presets.easeInEaseOut,
+            //     duration: 300,
+            // });
 
             actions.toggleCategory(category);
         })
@@ -106,6 +125,11 @@ class Category extends Component {
             <TouchableOpacity onPress={this.toggle}>
                 <View style={categoryStyle}>
                     <Text style={categoryTextStyle}>{category.text}</Text>
+                    {selected &&
+                        <View style={styles.check}>
+                            <Image source={require('./assets/GreenCheckmark.png')}/>
+                        </View>
+                    }
                 </View>
                 <View style={styles.categorySeparator}></View>
             </TouchableOpacity>
@@ -155,6 +179,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 22,
+        flexDirection: 'row',
     },
     categorySelected: {
     },
@@ -165,6 +190,11 @@ const styles = StyleSheet.create({
     categoryTextSelected: {
         color: 'rgb(87, 163, 43)',
     },
+    check: {
+        marginLeft: 10,
+        width: 16,
+        height: 13,
+    }
 });
 
 export default MainPage;

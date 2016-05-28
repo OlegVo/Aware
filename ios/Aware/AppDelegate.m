@@ -72,12 +72,19 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+  // TODO Временно для отладки
+  
   NSLog(@"Some notification here");
   
-//  UIApplicationState applicationState = application.applicationState;
-//  if (applicationState == UIApplicationStateBackground) {
-//    [application presentLocalNotificationNow:notification];
-//  }
+  UIApplicationState applicationState = application.applicationState;
+  if (applicationState != UIApplicationStateBackground) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Aware"
+                                                    message:notification.alertBody
+                                                   delegate:self
+                                          cancelButtonTitle:@"Готово"
+                                          otherButtonTitles:nil];
+    [alert show];
+  }
 }
 
 @end
