@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import StartScreen from './StartScreen';
 import MainPage from './MainPage';
 import Settings from './Settings';
-// import Notification from './Notification';
+import Notification from './Notification';
 
 import * as actions from '../actions';
 
@@ -118,9 +118,9 @@ class Navigator extends Component {
                     <StartScreen step={step} actions={actions} />
                 </Animated.View>
 
-                <Animated.View style={[styles.startScreen, this.animatedStyles.startScreen]}>
+                {false &&
                     <Settings actions={actions} />
-                </Animated.View>
+                }
             </View>
         );
     }

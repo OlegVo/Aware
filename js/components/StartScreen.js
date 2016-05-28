@@ -10,8 +10,6 @@ import {
     Image,
 } from 'react-native';
 
-import LinearGradient from 'react-native-linear-gradient';
-
 import _ from 'lodash';
 
 const window = Dimensions.get('window');
@@ -69,9 +67,7 @@ class StartScreen extends Component {
         const isLastStep = (step == steps.length - 1);
 
         return (
-            <View style={styles.screen}>
-
-                
+            <View style={screenStyle}>
 
                 <View style={styles.stepsArea}>
                     <View style={stepsContainerStyle}>
@@ -145,15 +141,6 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
-        width: window.width,
-        height: window.height
-    },
-    gradient: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0,
     },
     stepsArea: {
         width: window.width,
