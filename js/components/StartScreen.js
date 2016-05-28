@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         lineHeight: 21,
         textAlign: 'center',
-        color: 'rgb(58, 58, 58)'
+        color: 'rgb(58, 58, 58)',
+        fontFamily: 'Bitter-Bold'
     },
     image: {
         height: 270,

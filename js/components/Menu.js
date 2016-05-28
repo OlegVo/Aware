@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         color: 'rgb(216, 216, 216)',
         fontSize: 18,
         lineHeight: 22,
+        fontFamily: 'Bitter-Bold'
     },
     button: {
         width: 25,
