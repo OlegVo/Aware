@@ -19,6 +19,13 @@ class Settings extends Component {
 
         const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
+        const soundNotifyLabel = settings.isSoundNotify ? 'Выключить' : 'Включить';
+        const soundTriggerTextStyle = [styles.soundTrigger];
+        // по умолчанию приложение работает в "тихом" режиме (подсвечиваем "выключить" зеленым)
+        if (settings.isSoundNotify) {
+            soundTriggerTextStyle.push(styles.soundTriggerSelected);
+        }
+
         return (
             <View style={styles.settingsScreen}>
                 <Menu
@@ -81,9 +88,9 @@ class Settings extends Component {
                         <View style={styles.title}>
                             <Text style={styles.titleText}>Оповещение звуком</Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={actions.setSoundNotification}>
                             <View>
-                                <Text style={styles.soundTrigger}>Выключено</Text>
+                                <Text style={soundTriggerTextStyle}>{soundNotifyLabel}</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.categorySeparator}></View>
@@ -139,6 +146,9 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         color: 'rgb(94, 94, 94)',
         marginTop: 12
+    },
+    soundTriggerSelected: {
+        color: 'rgb(87, 163, 43)',
     },
     titleIcon: {
         width: 28,

@@ -32,3 +32,9 @@ export const showNotification = (notification) => {
         notification
     };
 };
+
+export const setSoundNotification = (status) => {
+    return {
+        type: 'SET_SOUND_NOTIFICATION',
+    };
+};
