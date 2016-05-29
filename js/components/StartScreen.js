@@ -201,12 +201,13 @@ const styles = StyleSheet.create({
         width: 260,
     },
     buttonText: {
-        fontSize: 22,
+        fontSize: 16,
         color: 'rgb(58, 58, 58)',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Bitter-Bold',
     },
     buttonLastText: {
-        fontSize: 18,
+        fontSize: 16,
     },
     buttonArrow: {
         marginLeft: 12,
