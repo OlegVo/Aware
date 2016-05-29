@@ -26,19 +26,26 @@ import * as actions from '../actions';
 const window = Dimensions.get('window');
 
 let startScreenPosition;
+let rightPanelPosition;
 
 class Navigator extends Component {
     constructor(props) {
         super(props);
 
         const { page } = props;
+
         startScreenPosition = page == 'startScreen' ? 0 : -window.width;
+        rightPanelPosition = page == 'notification' || page == 'settings' ? 0 : window.width;
 
         this.startScreenPan = new Animated.Value(startScreenPosition);
+        this.rightPanelPan = new Animated.Value(rightPanelPosition);
 
         this.animatedStyles = {
             startScreen: {
                 left: this.startScreenPan
+            },
+            rightPanel: {
+                left: this.rightPanelPan
             }
         };
     }
@@ -91,9 +98,18 @@ class Navigator extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.page !== this.props.page) {
-            startScreenPosition = (nextProps.page == 'startScreen' ? 0 : -window.width);
+            const page = nextProps.page;
+
+            startScreenPosition = (page == 'startScreen' ? 0 : -window.width);
             Animated.timing(this.startScreenPan, {
                 toValue: startScreenPosition,
+                easing: Easing.inOut(Easing.cubic),
+                duration: 200,
+            }).start();
+
+            rightPanelPosition = (page == 'notification' || page == 'settings' ? 0 : window.width);
+            Animated.timing(this.rightPanelPan, {
+                toValue: rightPanelPosition,
                 easing: Easing.inOut(Easing.cubic),
                 duration: 200,
             }).start();
@@ -101,7 +117,7 @@ class Navigator extends Component {
     }
 
     render() {
-        const { categories, page, step, notifications, actions } = this.props;
+        const { categories, page, step, notifications, displayedNotification, actions } = this.props;
 
         const barStyle = page != 'startScreen' ? 'light-content' : 'default';
 
@@ -114,13 +130,19 @@ class Navigator extends Component {
 
                 <MainPage categories={categories} notifications={notifications} actions={actions} />
 
-                <Animated.View style={[styles.startScreen, this.animatedStyles.startScreen]}>
+                <Animated.View style={[styles.screen, this.animatedStyles.startScreen]}>
                     <StartScreen step={step} actions={actions} />
                 </Animated.View>
 
-                {false && <View style={styles.settings}>
-                    <Settings actions={actions} />
-                </View>}
+                <Animated.View style={[styles.screen, this.animatedStyles.rightPanel]}>
+                    {page == 'notification' &&
+                        <Notification actions={actions} notification={displayedNotification} />
+                    }
+
+                    {page != 'notification' &&
+                        <Settings actions={actions}/>
+                    }
+                </Animated.View>
             </View>
         );
     }
@@ -131,7 +153,8 @@ const styles = StyleSheet.create({
         width: window.width,
         height: window.height,
     },
-    startScreen: {
+    // стиль для экранов, выезжающих слева и справа
+    screen: {
         position: 'absolute',
         top: 0,
         width: window.width,
@@ -146,13 +169,7 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-    state => ({
-        page: state.page,
-        step: state.step,
-        categories: state.categories,
-        settings: state.settings,
-        notifications: state.notifications,
-    }),
+    state => state,
     dispatch => ({
         actions: {
             ...bindActionCreators(actions, dispatch)

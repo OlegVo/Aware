@@ -4,6 +4,9 @@ const pageReducer = (state = 'startScreen', action) => {
         case 'SHOW_PAGE':
             return action.page;
 
+        case 'SHOW_NOTIFICATION':
+            return pageReducer(state, {type: 'SHOW_PAGE', page: 'notification'});
+        
         default:
             return state;
     }

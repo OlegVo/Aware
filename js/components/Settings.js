@@ -16,7 +16,10 @@ class Settings extends Component {
         const { categories, page, step, notifications, actions } = this.props;
         return (
             <View style={styles.settingsScreen}>
-                <Menu actions={actions} />
+                <Menu
+                    actions={actions}
+                    backButton={true}
+                />
 
                 <ScrollView>
                     <View>

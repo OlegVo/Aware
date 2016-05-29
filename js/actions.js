@@ -25,3 +25,10 @@ export const nextStep = () => {
         type: 'NEXT_STEP',
     };
 };
+
+export const showNotification = (notification) => {
+    return {
+        type: 'SHOW_NOTIFICATION',
+        notification
+    };
+};

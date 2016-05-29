@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
     StyleSheet,
     View,
@@ -9,30 +9,55 @@ import {
 } from 'react-native';
 
 class Menu extends Component {
+    static PropTypes = {
+        title: PropTypes.string.isRequired,
+        questionButton: PropTypes.bool,
+        gearButton: PropTypes.bool,
+        backButton: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        title: 'Aware'
+    };
+
     render() {
-        const { actions } = this.props;
+        const { actions, title, questionButton, gearButton, backButton } = this.props;
         
         return (
             <View style={styles.menu}>
                 <View style={styles.title}>
-                    <Text style={styles.titleText}>Aware</Text>
+                    <Text style={styles.titleText}>{title}</Text>
                 </View>
 
-                <TouchableOpacity
-                    activeOpacity={.8}
-                    style={[styles.button, styles.buttonLeft]}
-                    onPress={() => actions.showPage('startScreen')}
-                >
-                    <Image source={require('./assets/Question.png')} />
-                </TouchableOpacity>
+                {questionButton &&
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        style={[styles.button, styles.buttonLeft]}
+                        onPress={() => actions.showPage('startScreen')}
+                    >
+                        <Image source={require('./assets/Question.png')}/>
+                    </TouchableOpacity>
+                }
 
-                <TouchableOpacity
-                    activeOpacity={.8}
-                    style={[styles.button, styles.buttonRight]}
-                    onPress={() => actions.showPage('Settings')}
-                >
-                    <Image source={require('./assets/Gear.png')} />
-                </TouchableOpacity>
+                {backButton &&
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        style={[styles.button, styles.buttonLeft]}
+                        onPress={() => actions.showPage('main')}
+                    >
+                        <Image source={require('./assets/Chevron_Left_Light.png')}/>
+                    </TouchableOpacity>
+                }
+
+                {gearButton &&
+                    <TouchableOpacity
+                        activeOpacity={.8}
+                        style={[styles.button, styles.buttonRight]}
+                        onPress={() => actions.showPage('settings')}
+                    >
+                        <Image source={require('./assets/Gear.png')}/>
+                    </TouchableOpacity>
+                }
             </View>
         );
     }

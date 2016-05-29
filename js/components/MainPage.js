@@ -31,9 +31,14 @@ class MainPage extends Component {
         subscription = NativeAppEventEmitter.addListener(
             'didReceiveNotification',
             (event) => {
-                console.log('didReceiveNotification', notification)
-                const notification = event.notification;
-                // this.props.actions.showNotification(notification);
+                const { actions, notifications } = this.props; 
+                
+                const notificationText = event.notification;
+                console.log('didReceiveNotification', notificationText)
+
+                const notification = _.find(notifications, {shortText: notificationText});
+
+                actions.showNotification(notification);
             }
         );
     }
@@ -57,7 +62,7 @@ class MainPage extends Component {
 
         if (notifications.length) {
             LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 5);
-            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 10);
+            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 30);
         }
     }
     
@@ -70,7 +75,11 @@ class MainPage extends Component {
 
         return (
             <View style={styles.mainPage}>
-                <Menu actions={actions} />
+                <Menu
+                    actions={actions}
+                    questionButton={true}
+                    gearButton={true}
+                />
 
                 <ScrollView>
                     {!!selected.length &&
