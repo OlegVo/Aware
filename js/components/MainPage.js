@@ -20,6 +20,8 @@ const LocalNotificationManager = NativeModules.LocalNotificationManager;
 
 let subscription;
 
+let checkedPermissions = false;
+
 class MainPage extends Component {
     constructor(props) {
         super(props);
@@ -61,8 +63,7 @@ class MainPage extends Component {
         LocalNotificationManager.cancelNotifications();
 
         if (notifications.length) {
-            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 5);
-            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 30);
+            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 10);
         }
     }
     

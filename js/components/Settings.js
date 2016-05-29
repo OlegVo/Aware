@@ -11,9 +11,14 @@ import {
 
 import Menu from './Menu';
 
+import _ from 'lodash';
+
 class Settings extends Component {
     render() {
-        const { categories, page, step, notifications, actions } = this.props;
+        const { actions, settings } = this.props;
+
+        const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
         return (
             <View style={styles.settingsScreen}>
                 <Menu
@@ -45,6 +50,25 @@ class Settings extends Component {
                         </View>
                         <View style={styles.title}>
                             <Text style={styles.titleText}>Отправлять оповещения в&nbsp;дни недели</Text>
+                        </View>
+                        <View style={styles.daysOfWeek}>
+                            {daysOfWeek.map((day, index) => {
+                                const selected = (_.includes(settings.daysOfWeek, index));
+
+                                const dayOfWeekStyle = [styles.dayOfWeek];
+                                const dayOfWeekTextStyle = [styles.dayOfWeekText];
+                                if (selected) {
+                                    dayOfWeekTextStyle.push(styles.dayOfWeekTextSelected);
+                                }
+
+                                return (
+                                    <TouchableOpacity key={index}>
+                                        <View style={dayOfWeekStyle}>
+                                            <Text style={dayOfWeekTextStyle}>{day}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </View>
                         <TouchableOpacity>
                         </TouchableOpacity>
@@ -80,6 +104,25 @@ const styles = StyleSheet.create({
         fontSize: 24,
         lineHeight: 30,
         color: 'rgb(164, 158, 158)'
+    },
+    daysOfWeek: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        height: 60,
+    },
+    dayOfWeek: {
+        marginHorizontal: 5,
+    },
+    dayOfWeekText: {
+        fontSize: 18,
+        lineHeight: 30,
+        color: 'rgb(94, 94, 94)',
+        textDecorationLine: 'underline',
+    },
+    dayOfWeekTextSelected: {
+        color: 'rgb(87, 163, 43)',
     },
     notificationNum: {
         textAlign: 'center',

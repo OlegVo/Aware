@@ -8,6 +8,7 @@ import {
     LayoutAnimation,
     Dimensions,
     Image,
+    NativeModules,
 } from 'react-native';
 
 import _ from 'lodash';
@@ -32,6 +33,10 @@ const steps = [
     }
 ];
 
+const LocalNotificationManager = NativeModules.LocalNotificationManager;
+
+let checkedPermissions = false;
+
 class StartScreen extends Component {
     constructor(props) {
         super(props);
@@ -50,9 +55,15 @@ class StartScreen extends Component {
     }
 
     goToMainPage() {
-        this.props.actions.showPage('main');
+        console.log('checkPermissions')
+        LocalNotificationManager.checkPermissions();
+        checkedPermissions = true;
 
-        setTimeout(() => this.props.actions.setStep(0), 300);
+        requestAnimationFrame(() => {
+            this.props.actions.showPage('main');
+
+            setTimeout(() => this.props.actions.setStep(0), 300);
+        });
     }
 
     render() {

@@ -17,14 +17,14 @@
 {
   NSURL *jsCodeLocation;
   
-  for (NSString* family in [UIFont familyNames])
-  {
-    NSLog(@"%@", family);
-    for (NSString* name in [UIFont fontNamesForFamilyName: family])
-    {
-      NSLog(@" %@", name);
-    }
-  }
+//  for (NSString* family in [UIFont familyNames])
+//  {
+//    NSLog(@"%@", family);
+//    for (NSString* name in [UIFont fontNamesForFamilyName: family])
+//    {
+//      NSLog(@" %@", name);
+//    }
+//  }
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
@@ -63,8 +63,8 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-  [[UIApplication sharedApplication] registerForRemoteNotifications];
+//  [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+//  [[UIApplication sharedApplication] registerForRemoteNotifications];
   
   return YES;
 }

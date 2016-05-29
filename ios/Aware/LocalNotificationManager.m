@@ -24,6 +24,13 @@
 
 RCT_EXPORT_MODULE();
 
+RCT_EXPORT_METHOD(checkPermissions)
+{
+  NSLog(@"checkPermissions");
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
 RCT_EXPORT_METHOD(cancelNotifications)
 {
   [[UIApplication sharedApplication] cancelAllLocalNotifications];

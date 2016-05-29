@@ -56,13 +56,25 @@ class Navigator extends Component {
                 return (gestureState.dx > 20 || gestureState.dx < -20);
             },
             onPanResponderMove: (evt, gestureState) => {
-                if (gestureState.dx > 40 || gestureState.dx < 0) {
+                const { page } = this.props;
+
+                const leftPanelOpened = (page == 'startScreen');
+                const rightPanelOpened = (page == 'notification' || page == 'settings');
+
+                if (leftPanelOpened && gestureState.dx < 0) {
                     let value = startScreenPosition + gestureState.dx;
                     if (value > 0) {
                         value = 0;
                     }
 
                     this.startScreenPan.setValue(value);
+                }
+
+                if (!leftPanelOpened && !rightPanelOpened) {
+                    if (gestureState.dx > 40) {
+                        let value = startScreenPosition + gestureState.dx;
+                        this.startScreenPan.setValue(value);
+                    }
                 }
             },
             onPanResponderRelease: (evt, gestureState) => {
@@ -117,7 +129,7 @@ class Navigator extends Component {
     }
 
     render() {
-        const { categories, page, step, notifications, displayedNotification, actions } = this.props;
+        const { categories, page, step, notifications, displayedNotification, settings, actions } = this.props;
 
         const barStyle = page != 'startScreen' ? 'light-content' : 'default';
 
@@ -128,7 +140,7 @@ class Navigator extends Component {
                     barStyle={barStyle}
                 />
 
-                <MainPage categories={categories} notifications={notifications} actions={actions} />
+                <MainPage shown={(page == 'main')} categories={categories} notifications={notifications} actions={actions} />
 
                 <Animated.View style={[styles.screen, this.animatedStyles.startScreen]}>
                     <StartScreen step={step} actions={actions} />
@@ -140,7 +152,7 @@ class Navigator extends Component {
                     }
 
                     {page != 'notification' &&
-                        <Settings actions={actions}/>
+                        <Settings settings={settings} actions={actions}/>
                     }
                 </Animated.View>
             </View>
@@ -159,6 +171,11 @@ const styles = StyleSheet.create({
         top: 0,
         width: window.width,
         height: window.height,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowRadius: 2,
+        shadowOpacity: 0.1,
     },
     settings: {
         position: 'absolute',
