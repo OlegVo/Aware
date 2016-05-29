@@ -9,6 +9,7 @@ import {
     Image,
     ScrollView,
     NativeModules,
+    NativeAppEventEmitter,
 } from 'react-native';
 
 import Menu from './Menu';
@@ -17,11 +18,28 @@ import _ from 'lodash';
 
 const LocalNotificationManager = NativeModules.LocalNotificationManager;
 
+let subscription;
+
 class MainPage extends Component {
     constructor(props) {
         super(props);
 
         this.updateNotifications = this.updateNotifications.bind(this);
+    }
+
+    componentDidMount() {
+        subscription = NativeAppEventEmitter.addListener(
+            'didReceiveNotification',
+            (event) => {
+                console.log('didReceiveNotification', notification)
+                const notification = event.notification;
+                // this.props.actions.showNotification(notification);
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        subscription.remove();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -38,7 +56,8 @@ class MainPage extends Component {
         LocalNotificationManager.cancelNotifications();
 
         if (notifications.length) {
-            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 15);
+            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 5);
+            LocalNotificationManager.scheduleNotification(_.sample(notifications).shortText, 10);
         }
     }
     

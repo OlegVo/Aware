@@ -2,15 +2,30 @@
 @import UIKit;
 
 #import "LocalNotificationManager.h"
+#import "RCTBridge.h"
+#import "RCTEventDispatcher.h"
 
 @implementation LocalNotificationManager
+
+@synthesize bridge = _bridge;
+
+- (id) init
+{
+  self = [super init];
+  if (!self) return nil;
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(receiveLocalNotification:)
+                                               name:@"LocalNotification"
+                                             object:nil];
+  
+  return self;
+}
 
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(cancelNotifications)
 {
-  NSLog(@"Cancel notifications");
-  
   [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
@@ -28,5 +43,17 @@ RCT_EXPORT_METHOD(scheduleNotification:(NSString *)text interval:(NSInteger)inte
   
   NSLog(@"Notification should be presented: %@", text);
 }
+
+- (void) receiveLocalNotification:(NSNotification *) notification
+{
+  if ([[notification name] isEqualToString:@"LocalNotification"])
+    NSLog (@"Successfully received the notification!");
+  
+  UILocalNotification *localNotification = notification.object;
+  
+  [self.bridge.eventDispatcher sendAppEventWithName:@"didReceiveNotification"
+                                               body:@{@"notification": localNotification.alertBody}];
+}
+
 
 @end

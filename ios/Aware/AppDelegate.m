@@ -70,30 +70,11 @@
   return YES;
 }
 
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler
-{
-  //handle the actions
-  if ([identifier isEqualToString:@"declineAction"]){
-  }
-  else if ([identifier isEqualToString:@"answerAction"]){
-  }
-}
-
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-  // TODO Временно для отладки
-  
-  NSLog(@"Some notification here");
-  
-  UIApplicationState applicationState = application.applicationState;
-  if (applicationState != UIApplicationStateBackground) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Aware"
-                                                    message:notification.alertBody
-                                                   delegate:self
-                                          cancelButtonTitle:@"Готово"
-                                          otherButtonTitles:nil];
-    [alert show];
-  }
+  [[NSNotificationCenter defaultCenter]
+  	postNotificationName:@"LocalNotification"
+  	object:notification];
 }
 
 @end
