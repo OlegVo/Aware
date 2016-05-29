@@ -29,6 +29,7 @@ class Menu extends Component {
                 <TouchableOpacity
                     activeOpacity={.8}
                     style={[styles.button, styles.buttonRight]}
+                    onPress={() => actions.showPage('Settings')}
                 >
                     <Image source={require('./assets/Gear.png')} />
                 </TouchableOpacity>

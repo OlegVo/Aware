@@ -118,9 +118,9 @@ class Navigator extends Component {
                     <StartScreen step={step} actions={actions} />
                 </Animated.View>
 
-                {false &&
+                {false && <View style={styles.settings}>
                     <Settings actions={actions} />
-                }
+                </View>}
             </View>
         );
     }
@@ -132,6 +132,12 @@ const styles = StyleSheet.create({
         height: window.height,
     },
     startScreen: {
+        position: 'absolute',
+        top: 0,
+        width: window.width,
+        height: window.height,
+    },
+    settings: {
         position: 'absolute',
         top: 0,
         width: window.width,
