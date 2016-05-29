@@ -17,6 +17,7 @@ class Settings extends Component {
         return (
             <View style={styles.settingsScreen}>
                 <Menu
+                    title='Настройки'
                     actions={actions}
                     backButton={true}
                 />
@@ -37,6 +38,31 @@ class Settings extends Component {
                             </TouchableOpacity>
                             <View style={styles.categorySeparator}></View>
                         </View>
+                    </View>
+                    <View style={styles.selectedCategories}>
+                        <View style={styles.titleIcon}>
+                            <Image source={require('./assets/Calendar_Icon.png')} />
+                        </View>
+                        <View style={styles.title}>
+                            <Text style={styles.titleText}>Отправлять оповещения в&nbsp;дни недели</Text>
+                        </View>
+                        <TouchableOpacity>
+                        </TouchableOpacity>
+                        <View style={styles.categorySeparator}></View>
+                    </View>
+                    <View style={styles.selectedCategories}>
+                        <View style={styles.titleIcon}>
+                            <Image source={require('./assets/Sound_Icon.png')} />
+                        </View>
+                        <View style={styles.title}>
+                            <Text style={styles.titleText}>Оповещение звуком</Text>
+                        </View>
+                        <TouchableOpacity>
+                            <View>
+                                <Text style={styles.soundTrigger}>Выключено</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.categorySeparator}></View>
                     </View>
                 </ScrollView>
             </View>
@@ -63,6 +89,14 @@ const styles = StyleSheet.create({
         color: 'rgb(94, 94, 94)',
         marginTop: 12
     },
+    soundTrigger: {
+        textAlign: 'center',
+        textDecorationLine: 'underline',
+        fontSize: 18,
+        lineHeight: 30,
+        color: 'rgb(94, 94, 94)',
+        marginTop: 12
+    },
     titleIcon: {
         width: 28,
         height: 28,
@@ -76,7 +110,8 @@ const styles = StyleSheet.create({
         width: 140,
         backgroundColor: 'rgb(224, 224, 224)',
         alignSelf: 'center',
-        marginTop: 18
+        marginTop: 18,
+        marginBottom: 18
     }
 });
 
